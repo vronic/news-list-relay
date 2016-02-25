@@ -1,0 +1,40 @@
+type News implements Node {
+  id: ID!
+  seq: String
+  type: String
+  title: String
+  content: String
+}
+
+type NewsConnection {
+  pageInfo: PageInfo!
+  edges: [NewsEdge]
+}
+
+type NewsEdge {
+  node: News
+  cursor: String!
+}
+
+interface Node {
+  id: ID!
+}
+
+type PageInfo {
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
+  endCursor: String
+}
+
+type Query {
+  node(id: ID!): Node
+  viewer: User
+  news(seq: String): News
+  feed(filter: String): [News]
+}
+
+type User implements Node {
+  id: ID!
+  feed(after: String, first: Int, before: String, last: Int): NewsConnection
+}
